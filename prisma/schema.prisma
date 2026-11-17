@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum PaymentMethod {
+  CASH
+  NON_CASH
+}
+
+model Admin {
+  id           String        @id @default(cuid())
+  name         String
+  email        String        @unique
+  passwordHash String
+  createdAt    DateTime      @default(now())
+  transactions Transaction[]
+}enum CategoryType {
+  COLLECTION
+  OCCASION
+}
+
+model Category {
+  id               String       @id @default(cuid())
+  name             String
+  slug             String       @unique
+  type             CategoryType @default(COLLECTION)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  products         Product[]    @relation("ProductCollection")
+  occasionProducts Product[]    @relation("ProductOccasions")
+
+  @@index([type])
+}
+
+model Product {
+  id          String            @id @default(cuid())
+  slug        String?           @unique
+  name        String
+  description String            @default("")
+  image       String?
+  categoryId  String? // = koleksi produk
+  category    Category?         @relation("ProductCollection", fields: [categoryId], references: [id], onDelete: SetNull)
+  occasions   Category[]        @relation("ProductOccasions")
+  price       Int
+  isActive    Boolean           @default(true)
+  soldOut     Boolean           @default(false)
+  badge       String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  items       TransactionItem[]
+}
+
+model Transaction {
+  id                String            @id @default(cuid())
+  transactionNumber String            @unique
+  cashierId         String?
+  cashier           Admin?            @relation(fields: [cashierId], references: [id], onDelete: SetNull)
+  cashierName       String
+  customerName      String?
+  paymentMethod     PaymentMethod
+  subtotal          Int
+  ppnRate           Int
+  ppnAmount         Int
+  total             Int
+  amountReceived    Int
+  changeAmount      Int
+  createdAt         DateTime          @default(now())
+  deletedAt         DateTime?
+  items             TransactionItem[]
+
+  @@index([createdAt])
+  @@index([deletedAt])
+}
+
+model TransactionItem {
+  id            String      @id @default(cuid())
+  transactionId String
+  transaction   Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  productId     String?
+  product       Product?    @relation(fields: [productId], references: [id], onDelete: SetNull)
+  productName   String
+  unitPrice     Int
+  quantity      Int
+  note          String?
+  subtotal      Int
+}

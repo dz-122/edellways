@@ -1,0 +1,120 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), ui-serif, Georgia, serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-border: var(--sidebar-border);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: #f6f4ee;
+  --foreground: #18211d;
+  --card: #ffffff;
+  --card-foreground: #18211d;
+  --popover: #ffffff;
+  --popover-foreground: #18211d;
+  --primary: #1f4d3a;
+  --primary-foreground: #f6f4ee;
+  --secondary: #ebe7db;
+  --secondary-foreground: #1f4d3a;
+  --muted: #efece3;
+  --muted-foreground: #66716b;
+  --accent: #dfe9e2;
+  --accent-foreground: #1f4d3a;
+  --color-gold: #E6BB7D;
+  --destructive: #b83a2e;
+  --border: #e4dfd1;
+  --input: #d8d2c2;
+  --ring: #2f6b52;
+  --sidebar: #163428;
+  --sidebar-foreground: #e9efe9;
+  --sidebar-accent: #234a39;
+  --sidebar-border: #234a39;
+}
+
+@layer base {
+  * { @apply border-border outline-ring/50; }
+  body { @apply bg-background text-foreground; }
+}
+
+/* Struk thermal 80mm */
+@media print {
+  @page { size: 80mm auto; margin: 0; }
+  html, body { background: #fff !important; }
+  .no-print { display: none !important; }
+}
+
+@theme inline {
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-body: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --color-forest: #1f4d3a;
+  --color-forest-deep: #143427;
+  --color-cream: #f6f1e7;
+  --color-cream-deep: #ece4d3;
+  --color-blush: #efd9d0;
+  --color-rose: #b4584f;
+  --color-ink: #1d2621;
+}
+
+@theme {
+  --animate-marquee: marquee 40s linear infinite;
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee { animation: none; }
+}
+
+.font-brand {
+  font-family: var(--font-parisienne), cursive;
+}
+
+.color-brand {
+  color: var(--color-gold)
+}
+
+.scroll-minimal {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.scroll-minimal:hover,
+.scroll-minimal:focus-within {
+  scrollbar-color: rgb(31 77 58 / 0.35) transparent;
+}
+@media (hover: none) {
+  .scroll-minimal {
+    scrollbar-width: none;
+  }
+}
