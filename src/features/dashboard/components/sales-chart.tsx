@@ -16,12 +16,12 @@ export function SalesChart({ data }: { data: SalesPoint[] }) {
               <stop offset="100%" stopColor="#1f4d3a" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e4dfd1" />
+          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e3e8e5" />
           <XAxis dataKey="label" tickLine={false} axisLine={false} fontSize={12} stroke="#66716b" />
           <YAxis tickLine={false} axisLine={false} fontSize={12} stroke="#66716b" width={48} tickFormatter={compact} />
           <Tooltip
             formatter={(value) => [formatRupiah(Number(value)), "Penjualan"]}
-            contentStyle={{ borderRadius: 8, border: "1px solid #e4dfd1" }}
+            contentStyle={{ borderRadius: 8, border: "1px solid #e3e8e5" }}
           />
           <Area type="monotone" dataKey="total" stroke="#1f4d3a" strokeWidth={2} fill="url(#sales)" />
         </AreaChart>

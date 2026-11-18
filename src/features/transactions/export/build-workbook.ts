@@ -8,9 +8,9 @@ import type { HistoryFilters, TransactionView } from "../types";
 const COLOR = {
   green: "FF1F4D3A",
   greenSoft: "FFDFE9E2",
-  cream: "FFF6F4EE",
-  zebra: "FFFAF8F3",
-  border: "FFE4DFD1",
+  cream: "FFF6F7F6",
+  zebra: "FFF8FAF9",
+  border: "FFE3E7E5",
   text: "FF18211D",
   muted: "FF66716B",
   white: "FFFFFFFF",

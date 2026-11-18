@@ -41,7 +41,7 @@ export default async function DashboardPage() {
               </span>
             </CardHeader>
             <CardContent>
-              <p className="font-serif text-3xl font-semibold">{value}</p>
+              <p className="text-2xl font-semibold tracking-tight">{value}</p>
               <p className="mt-1 text-xs text-muted-foreground">{hint}</p>
             </CardContent>
           </Card>

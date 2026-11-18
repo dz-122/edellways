@@ -4,8 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-cormorant), ui-serif, Georgia, serif;
+    --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif; /* admin tidak lagi memakai serif */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -36,24 +36,23 @@
 
 :root {
   --radius: 0.625rem;
-  --background: #f6f4ee;
+  --background: #f7f8f7;
   --foreground: #18211d;
   --card: #ffffff;
   --card-foreground: #18211d;
   --popover: #ffffff;
   --popover-foreground: #18211d;
   --primary: #1f4d3a;
-  --primary-foreground: #f6f4ee;
-  --secondary: #ebe7db;
+  --primary-foreground: #ffffff;
+  --secondary: #ecf0ee;
   --secondary-foreground: #1f4d3a;
-  --muted: #efece3;
+  --muted: #f0f3f1;
   --muted-foreground: #66716b;
-  --accent: #dfe9e2;
+  --accent: #e4efe9;
   --accent-foreground: #1f4d3a;
-  --color-gold: #E6BB7D;
   --destructive: #b83a2e;
-  --border: #e4dfd1;
-  --input: #d8d2c2;
+  --border: #e3e8e5;
+  --input: #d4dad7;
   --ring: #2f6b52;
   --sidebar: #163428;
   --sidebar-foreground: #e9efe9;
@@ -78,9 +77,9 @@
   --font-body: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
   --color-forest: #1f4d3a;
   --color-forest-deep: #143427;
-  --color-cream: #f6f1e7;
-  --color-cream-deep: #ece4d3;
-  --color-blush: #efd9d0;
+  --color-cream: #fdfcfa;
+  --color-cream-deep: #f3f1ec;
+  --color-blush: #f4dfd9;
   --color-rose: #b4584f;
   --color-ink: #1d2621;
 }

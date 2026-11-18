@@ -21,7 +21,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     <PrinterProvider>
     <div className="min-h-screen lg:grid lg:grid-cols-[248px_1fr]">
       <aside className="sticky top-0 hidden h-screen flex-col bg-sidebar p-5 text-sidebar-foreground lg:flex">
-        <p className="mb-8 px-3 font-serif text-3xl font-semibold">Edellways</p>
+        <p className="mb-8 px-3 text-2xl font-semibold tracking-tight">Edellways</p>
         <AdminNav />
         <div className="mt-auto">
           <PrinterStatus />
@@ -35,7 +35,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
       <div className="min-w-0">
         <header className="bg-sidebar pt-3 text-sidebar-foreground lg:hidden">
           <div className="flex items-center justify-between px-4 pb-2">
-            <p className="font-serif text-2xl font-semibold">Edellways</p>
+            <p className="text-xl font-semibold tracking-tight">Edellways</p>
             <div className="flex items-center">
               <PrinterStatus compact />
               {logoutForm}
