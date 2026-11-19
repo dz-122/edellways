@@ -15,7 +15,7 @@ export type CategoryLink = { id: string; name: string; slug: string; count: numb
 
 export type CatalogTaxonomy = { collections: CategoryLink[]; occasions: CategoryLink[] };
 
-export type HomeData = ChristmasSection CatalogTaxonomy & {
+export type HomeData = CatalogTaxonomy & {
   newArrivals: CatalogProduct[];
   featured: CatalogProduct[];
   christmas: CatalogProduct[];
