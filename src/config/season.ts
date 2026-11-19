@@ -1,7 +1,7 @@
 import { STORE } from "./store";
 
 export const CHRISTMAS = {
-  enabled: true, // matikan manual kapan saja
+  enabled: true, // matikan kapan saja
   from: "2026-11-01",
   until: "2026-12-26", // ganti tahun depan
   occasionSlug: "natal", // slug acara "Natal" di admin
