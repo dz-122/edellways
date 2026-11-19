@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Snow } from "./snow";
 
 type HeroProps = { image: string | null; productName: string | null };
 

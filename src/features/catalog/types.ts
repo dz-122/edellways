@@ -15,9 +15,10 @@ export type CategoryLink = { id: string; name: string; slug: string; count: numb
 
 export type CatalogTaxonomy = { collections: CategoryLink[]; occasions: CategoryLink[] };
 
-export type HomeData = CatalogTaxonomy & {
+export type HomeData = ChristmasSection CatalogTaxonomy & {
   newArrivals: CatalogProduct[];
   featured: CatalogProduct[];
+  christmas: CatalogProduct[];
 };
 
 export type CatalogFilters = {

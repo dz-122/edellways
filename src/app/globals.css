@@ -117,3 +117,49 @@
     scrollbar-width: none;
   }
 }
+
+/* ===== Tema Natal ===== */
+@theme inline {
+  --color-cranberry: #a3182f;
+  --color-cranberry-deep: #7d1224;
+  --color-gold: #d4af6a;
+  --color-gold-soft: #f1e0b0;
+  --color-pine: #0f3b2a;
+  --color-pine-deep: #0a2a1e;
+}
+
+@keyframes snowfall {
+  0% { top: -6%; opacity: 0; }
+  8% { opacity: 0.9; }
+  100% { top: 102%; opacity: 0.8; }
+}
+@keyframes snowsway {
+  from { transform: translateX(-10px); }
+  to { transform: translateX(14px); }
+}
+.snowflake {
+  position: absolute;
+  top: -6%;
+  border-radius: 9999px;
+  background: #fff;
+  animation:
+    snowfall var(--dur, 12s) linear var(--delay, 0s) infinite,
+    snowsway var(--sway, 4s) ease-in-out var(--delay, 0s) infinite alternate;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 1; filter: brightness(1.2); }
+  50% { opacity: 0.4; filter: brightness(0.8); }
+}
+.bulb { animation: twinkle 2.4s ease-in-out infinite; }
+
+@keyframes swing {
+  from { transform: rotate(-4deg); }
+  to { transform: rotate(4deg); }
+}
+.ornament { transform-origin: top center; animation: swing 4s ease-in-out infinite alternate; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bulb, .ornament { animation: none; }
+  .snowflake { display: none; }
+}

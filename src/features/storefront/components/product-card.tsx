@@ -8,11 +8,16 @@ import { useCart } from "@/features/cart/cart-provider";
 import { formatRupiah } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
-type ProductCardProps = { product: CatalogProduct; variant?: "default" | "large" };
+type ProductCardProps = {
+  product: CatalogProduct;
+  size?: "default" | "compact";
+  tone?: "light" | "dark"; // dark = di atas latar gelap (bagian Natal)
+};
 
-export function ProductCard({ product, variant = "default" }: ProductCardProps) {
+export function ProductCard({ product, size = "default", tone = "light" }: ProductCardProps) {
   const { add } = useCart();
-  const large = variant === "large";
+  const compact = size === "compact";
+  const dark = tone === "dark";
 
   const handleAdd = () => {
     const cart = add({ productId: product.id, name: product.name, image: product.image, price: product.price });
@@ -25,21 +30,27 @@ export function ProductCard({ product, variant = "default" }: ProductCardProps) 
     <article className="group flex h-full flex-col">
       <div
         className={cn(
-          "relative overflow-hidden rounded-2xl bg-cream-deep sm:rounded-[1.5rem]",
-          large ? "aspect-[4/5] lg:aspect-auto lg:min-h-[28rem] lg:flex-1" : "aspect-[4/5]"
+          "relative overflow-hidden bg-cream-deep",
+          compact ? "aspect-[5/6] rounded-xl sm:rounded-2xl" : "aspect-[4/5] rounded-2xl sm:rounded-[1.5rem]",
+          dark && "ring-1 ring-gold/40"
         )}
       >
         <Link href={`/produk/${product.slug}`} aria-label={`Lihat ${product.name}`} className="absolute inset-0 block">
           <ProductImage
             src={product.image}
             alt={product.name}
-            sizes={large ? "(min-width:1024px) 50vw, 100vw" : "(min-width:1280px) 25vw, (min-width:768px) 33vw, 50vw"}
+            sizes="(min-width:1280px) 20vw, (min-width:768px) 25vw, 50vw"
             className="absolute inset-0"
           />
         </Link>
 
         {product.badge && (
-          <span className="absolute left-2 top-2 rounded-full bg-cream/95 px-2.5 py-0.5 text-[11px] font-medium text-forest sm:left-3 sm:top-3 sm:px-3 sm:py-1 sm:text-xs">
+          <span
+            className={cn(
+              "absolute rounded-full bg-cream/95 font-medium text-forest",
+              compact ? "left-2 top-2 px-2 py-0.5 text-[10px] sm:text-[11px]" : "left-2 top-2 px-2.5 py-0.5 text-[11px] sm:left-3 sm:top-3 sm:px-3 sm:py-1 sm:text-xs"
+            )}
+          >
             {product.badge}
           </span>
         )}
@@ -52,20 +63,31 @@ export function ProductCard({ product, variant = "default" }: ProductCardProps) 
             onClick={handleAdd}
             aria-label={`Tambah ${product.name} ke keranjang`}
             className={cn(
-              "absolute bottom-2 right-2 grid size-9 place-items-center rounded-full bg-forest text-cream shadow-md transition",
-              "hover:scale-105 hover:bg-forest-deep active:scale-95 sm:bottom-3 sm:right-3 sm:size-10 lg:size-11",
-              "after:absolute after:-inset-1.5 after:content-['']" // area sentuh lebih luas tanpa membesarkan tombol
+              "absolute grid place-items-center rounded-full shadow-md transition hover:scale-105 active:scale-95",
+              "after:absolute after:-inset-1.5 after:content-['']", // area sentuh lebih luas tanpa membesarkan tombol
+              compact ? "bottom-1.5 right-1.5 size-8 sm:bottom-2 sm:right-2 sm:size-9" : "bottom-2 right-2 size-9 sm:bottom-3 sm:right-3 sm:size-10 lg:size-11",
+              dark ? "bg-gold text-pine hover:bg-gold-soft" : "bg-forest text-cream hover:bg-forest-deep"
             )}
           >
-            <Plus className="size-4 sm:size-[18px] lg:size-5" />
+            <Plus className={compact ? "size-4" : "size-4 sm:size-[18px] lg:size-5"} />
           </button>
         )}
       </div>
 
-      <div className="pt-2.5 sm:pt-3">
-        {product.categoryName && <p className="text-[11px] text-ink/50 sm:text-xs">{product.categoryName}</p>}
-        <h3 className="font-display text-base leading-snug sm:text-lg lg:text-xl">{product.name}</h3>
-        <p className="mt-0.5 text-sm text-forest">{formatRupiah(product.price)}</p>
+      <div className={compact ? "pt-2" : "pt-2.5 sm:pt-3"}>
+        {product.categoryName && !compact && (
+          <p className={cn("text-[11px] sm:text-xs", dark ? "text-cream/55" : "text-ink/50")}>{product.categoryName}</p>
+        )}
+        <h3
+          className={cn(
+            "font-display leading-snug",
+            compact ? "text-[15px] sm:text-base" : "text-base sm:text-lg lg:text-xl",
+            dark && "text-cream"
+          )}
+        >
+          {product.name}
+        </h3>
+        <p className={cn(compact ? "text-[13px]" : "text-sm", "mt-0.5", dark ? "text-gold" : "text-forest")}>{formatRupiah(product.price)}</p>
       </div>
     </article>
   );

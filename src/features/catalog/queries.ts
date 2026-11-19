@@ -1,6 +1,7 @@
 import "server-only";
 import { cache } from "react";
 import type { Prisma } from "@prisma/client";
+import { CHRISTMAS } from "@/config/christmas";
 import { prisma } from "@/lib/prisma";
 import { CATALOG_PAGE_SIZE, type CatalogSort } from "./constants";
 import type { CatalogFacets, CatalogFilters, CatalogPage, CatalogProduct, CatalogTaxonomy, HomeData, ProductDetail } from "./types";
@@ -51,15 +52,21 @@ export const getCatalogTaxonomy = cache(async (): Promise<CatalogTaxonomy> => {
 /* ---------- Beranda ---------- */
 
 export async function getHomeData(): Promise<HomeData> {
-  const [taxonomy, newArrivals, bestSellers] = await Promise.all([
+  const [taxonomy, newArrivals, bestSellers, christmas] = await Promise.all([
     getCatalogTaxonomy(),
-    prisma.product.findMany({ where: { isActive: true }, orderBy: { createdAt: "desc" }, take: 8, select: productSelect }),
+    prisma.product.findMany({ where: { isActive: true }, orderBy: { createdAt: "desc" }, take: 6, select: productSelect }),
     prisma.transactionItem.groupBy({
       by: ["productId"],
       where: { productId: { not: null }, transaction: { deletedAt: null } },
       _sum: { quantity: true },
       orderBy: { _sum: { quantity: "desc" } },
       take: 12,
+    }),
+    prisma.product.findMany({
+      where: { isActive: true, occasions: { some: { slug: CHRISTMAS.occasionSlug, type: "OCCASION" } } },
+      orderBy: { createdAt: "desc" },
+      take: 10,
+      select: productSelect,
     }),
   ]);
 
@@ -84,7 +91,12 @@ export async function getHomeData(): Promise<HomeData> {
     featured = [...featured, ...extra.map(toCatalogProduct)];
   }
 
-  return { ...taxonomy, newArrivals: newArrivals.map(toCatalogProduct), featured };
+  return {
+    ...taxonomy,
+    newArrivals: newArrivals.map(toCatalogProduct),
+    featured,
+    christmas: christmas.map(toCatalogProduct),
+  };
 }
 
 /* ---------- Katalog ---------- */
