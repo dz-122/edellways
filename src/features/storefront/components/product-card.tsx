@@ -15,8 +15,10 @@ export function ProductCard({ product, variant = "default" }: ProductCardProps) 
   const large = variant === "large";
 
   const handleAdd = () => {
-    add({ productId: product.id, name: product.name, image: product.image, price: product.price });
-    toast.success(`${product.name} masuk keranjang`);
+    const cart = add({ productId: product.id, name: product.name, image: product.image, price: product.price });
+    toast.success(`${product.name} masuk keranjang`, {
+      description: `Total keranjang ${formatRupiah(cart.total)} (termasuk PPN ${cart.ppnRate}%)`,
+    });
   };
 
   return (

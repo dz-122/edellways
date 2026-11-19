@@ -1,4 +1,4 @@
-export const PPN_RATE = 12; // Verifikasi tarif & status PKP sebelum dipakai produksi.
+export const PPN_RATE = 11;
 
 export const PAYMENT_METHODS = ["CASH", "NON_CASH"] as const;
 export type PaymentMethod = (typeof PAYMENT_METHODS)[number];

@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { MessageCircle, Minus, Plus, ShoppingBag } from "lucide-react";
 import { useCart } from "@/features/cart/cart-provider";
 import { buildChatUrl } from "@/features/cart/whatsapp";
+import { calculateOrder } from "@/features/transactions/calculations";
 import { formatRupiah } from "@/lib/format";
 import type { CatalogProduct } from "../types";
 
@@ -28,6 +29,14 @@ export function AddToCartPanel({ product }: { product: CatalogProduct }) {
   }
 
   const item = { productId: product.id, name: product.name, image: product.image, price: product.price };
+  const t = calculateOrder([{ unitPrice: product.price, quantity }]);
+
+  const handleAdd = () => {
+    const cart = add(item, quantity);
+    toast.success(`${product.name} masuk keranjang`, {
+      description: `Total keranjang ${formatRupiah(cart.total)} (termasuk PPN ${cart.ppnRate}%)`,
+    });
+  };
 
   return (
     <div className="space-y-4">
@@ -41,13 +50,27 @@ export function AddToCartPanel({ product }: { product: CatalogProduct }) {
             <Plus className="size-4" />
           </button>
         </div>
-        <p className="text-sm text-ink/65">Subtotal <span className="font-display text-xl text-ink">{formatRupiah(product.price * quantity)}</span></p>
+
+        <dl className="flex-1 space-y-0.5 text-sm" aria-live="polite">
+          <div className="flex justify-between text-ink/65">
+            <dt>Subtotal</dt>
+            <dd>{formatRupiah(t.subtotal)}</dd>
+          </div>
+          <div className="flex justify-between text-ink/65">
+            <dt>PPN ({t.ppnRate}%)</dt>
+            <dd>{formatRupiah(t.ppnAmount)}</dd>
+          </div>
+          <div className="flex justify-between border-t border-forest/10 pt-1 font-medium text-ink">
+            <dt>Total</dt>
+            <dd>{formatRupiah(t.total)}</dd>
+          </div>
+        </dl>
       </div>
 
       <div className="flex flex-wrap gap-3">
         <button
           type="button"
-          onClick={() => { add(item, quantity); toast.success(`${product.name} masuk keranjang`); }}
+          onClick={handleAdd}
           className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-forest px-6 font-medium text-cream transition hover:bg-forest-deep"
         >
           <ShoppingBag className="size-4" /> Tambah ke keranjang

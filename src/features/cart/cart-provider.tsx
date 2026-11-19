@@ -1,5 +1,6 @@
 "use client";
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { calculateOrder, type OrderTotals } from "@/features/transactions/calculations";
 import type { CartItem } from "./types";
 
 const STORAGE_KEY = "edellways:cart";
@@ -10,9 +11,11 @@ type CartContextValue = {
   ready: boolean;
   count: number;
   subtotal: number;
+  totals: OrderTotals; // subtotal + PPN + total, dihitung dari satu fungsi yang sama dengan kasir
   isOpen: boolean;
   setOpen: (open: boolean) => void;
-  add: (item: Omit<CartItem, "quantity">, quantity?: number) => void;
+  /** Menambah produk dan mengembalikan total keranjang terbaru (sudah termasuk PPN). */
+  add: (item: Omit<CartItem, "quantity">, quantity?: number) => OrderTotals;
   setQuantity: (productId: string, quantity: number) => void;
   remove: (productId: string) => void;
   replaceAll: (items: CartItem[]) => void;
@@ -20,6 +23,8 @@ type CartContextValue = {
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
+
+const totalsOf = (items: CartItem[]) => calculateOrder(items.map((i) => ({ unitPrice: i.price, quantity: i.quantity })));
 
 function isCartItem(value: unknown): value is CartItem {
   if (typeof value !== "object" || value === null) return false;
@@ -40,14 +45,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [ready, setReady] = useState(false);
   const [isOpen, setOpen] = useState(false);
+  const itemsRef = useRef<CartItem[]>([]); // salinan terbaru agar add() stabil dan langsung tahu total baru
+
+  const commit = useCallback((next: CartItem[]) => {
+    itemsRef.current = next;
+    setItems(next);
+  }, []);
 
   useEffect(() => {
-    setItems(readStorage());
+    commit(readStorage());
     setReady(true);
-    const sync = (e: StorageEvent) => e.key === STORAGE_KEY && setItems(readStorage()); // sinkron antar tab
+    const sync = (e: StorageEvent) => e.key === STORAGE_KEY && commit(readStorage()); // sinkron antar tab
     window.addEventListener("storage", sync);
     return () => window.removeEventListener("storage", sync);
-  }, []);
+  }, [commit]);
 
   useEffect(() => {
     if (!ready) return;
@@ -56,34 +67,43 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     } catch {}
   }, [items, ready]);
 
-  const add = useCallback((item: Omit<CartItem, "quantity">, quantity = 1) => {
-    setItems((current) => {
-      const existing = current.find((i) => i.productId === item.productId);
-      if (existing) {
-        return current.map((i) => (i.productId === item.productId ? { ...i, quantity: Math.min(MAX_QTY, i.quantity + quantity) } : i));
-      }
-      return [...current, { ...item, quantity }];
-    });
-  }, []);
+  const add = useCallback(
+    (item: Omit<CartItem, "quantity">, quantity = 1) => {
+      const current = itemsRef.current;
+      const exists = current.some((i) => i.productId === item.productId);
+      const next = exists
+        ? current.map((i) => (i.productId === item.productId ? { ...i, quantity: Math.min(MAX_QTY, i.quantity + quantity) } : i))
+        : [...current, { ...item, quantity }];
+      commit(next);
+      return totalsOf(next);
+    },
+    [commit]
+  );
 
-  const setQuantity = useCallback((productId: string, quantity: number) => {
-    setItems((current) =>
-      quantity < 1
-        ? current.filter((i) => i.productId !== productId)
-        : current.map((i) => (i.productId === productId ? { ...i, quantity: Math.min(MAX_QTY, quantity) } : i))
-    );
-  }, []);
+  const setQuantity = useCallback(
+    (productId: string, quantity: number) => {
+      const current = itemsRef.current;
+      commit(
+        quantity < 1
+          ? current.filter((i) => i.productId !== productId)
+          : current.map((i) => (i.productId === productId ? { ...i, quantity: Math.min(MAX_QTY, quantity) } : i))
+      );
+    },
+    [commit]
+  );
 
-  const remove = useCallback((productId: string) => setItems((c) => c.filter((i) => i.productId !== productId)), []);
-  const replaceAll = useCallback((next: CartItem[]) => setItems(next), []);
-  const clear = useCallback(() => setItems([]), []);
+  const remove = useCallback((productId: string) => commit(itemsRef.current.filter((i) => i.productId !== productId)), [commit]);
+  const replaceAll = useCallback((next: CartItem[]) => commit(next), [commit]);
+  const clear = useCallback(() => commit([]), [commit]);
 
-  const value = useMemo<CartContextValue>(
-    () => ({
+  const value = useMemo<CartContextValue>(() => {
+    const totals = totalsOf(items);
+    return {
       items,
       ready,
       count: items.reduce((n, i) => n + i.quantity, 0),
-      subtotal: items.reduce((s, i) => s + i.price * i.quantity, 0),
+      subtotal: totals.subtotal,
+      totals,
       isOpen,
       setOpen,
       add,
@@ -91,9 +111,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       remove,
       replaceAll,
       clear,
-    }),
-    [items, ready, isOpen, add, setQuantity, remove, replaceAll, clear]
-  );
+    };
+  }, [items, ready, isOpen, add, setQuantity, remove, replaceAll, clear]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
