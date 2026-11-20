@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { STORE } from "@/config/store";
-import { buildChatUrl } from "@/features/cart/whatsapp";
+import { buildChatUrl, NUMBER } from "@/features/cart/whatsapp";
 import { INFO, NAV_LINKS } from "../content";
 import { container } from "../styles";
 
@@ -23,7 +23,7 @@ export function SiteFooter() {
         <div>
           <p className="mb-3 font-display text-xl text-cream">Hubungi kami</p>
           <ul className="space-y-2 text-sm">
-            <li><a href={buildChatUrl()} className="hover:text-cream">WhatsApp</a></li>
+            <li><a href={buildChatUrl()} className="hover:text-cream">WhatsApp +{NUMBER} </a></li>
             <li><a href={INFO.instagramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-cream">Instagram {INFO.instagram}</a></li>
             <li><a href={INFO.tiktokUrl} target="_blank" rel="noopener noreferrer" className="hover:text-cream">Tiktok {INFO.tiktok}</a></li>
           </ul>

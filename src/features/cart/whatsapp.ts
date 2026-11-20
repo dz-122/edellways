@@ -2,7 +2,7 @@ import { calculateOrder } from "@/features/transactions/calculations";
 import { formatRupiah } from "@/lib/format";
 import type { CartItem } from "./types";
 
-const NUMBER = (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "").replace(/\D/g, "");
+export const NUMBER = (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "").replace(/\D/g, "");
 
 export const hasWhatsAppNumber = () => NUMBER.length > 0;
 
