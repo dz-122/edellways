@@ -31,9 +31,7 @@ export function ProductCard({
       image: product.image,
       price: product.price,
     });
-    toast.success(`${product.name} masuk keranjang`, {
-      description: `Total keranjang ${formatRupiah(cart.total)} (termasuk PPN ${cart.ppnRate}%)`,
-    });
+    toast.success(`${product.name} berhasil ditambahkan`);
   };
 
   return (

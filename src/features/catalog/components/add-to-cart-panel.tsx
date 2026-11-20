@@ -33,9 +33,7 @@ export function AddToCartPanel({ product }: { product: CatalogProduct }) {
 
   const handleAdd = () => {
     const cart = add(item, quantity);
-    toast.success(`${product.name} masuk keranjang`, {
-      description: `Total keranjang ${formatRupiah(cart.total)} (termasuk PPN ${cart.ppnRate}%)`,
-    });
+    toast.success(`${product.name} berhasil ditambahkan`);
   };
 
   return (
