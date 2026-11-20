@@ -196,3 +196,15 @@
   .hero-in { animation: hero-in 1.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
   .rise-in { animation: rise-in 1s cubic-bezier(0.22, 1, 0.36, 1) 0.9s both; }
 }
+
+/* ===== Scroll mulus antar section ===== */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Offset tinggi header sticky (h-16 = 4rem) supaya judul section tidak ketutup */
+section[id] {
+  scroll-margin-top: 4rem;
+}
