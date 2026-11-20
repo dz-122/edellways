@@ -21,7 +21,7 @@ export default function LoginPage() {
         <p className="font-brand text-5xl leading-none text-gold">Edellways</p>
         <div className="relative max-w-md">
           <h1 className="text-5xl font-medium leading-tight">
-            Kelola toko bunga dengan tenang.
+            Kelola katalog anda sendiri.
           </h1>
           <p className="mt-4 text-sidebar-foreground/70">
             Produk, kasir, dan riwayat transaksi dalam satu tempat.

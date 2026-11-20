@@ -2,7 +2,7 @@ import "server-only";
 import ExcelJS from "exceljs";
 import { STORE } from "@/config/store";
 import { toDateKey } from "@/lib/format";
-import { PAYMENT_LABELS } from "../constants";
+import { EXPORT_MAX_ROWS, PAYMENT_LABELS } from "../constants";
 import type { HistoryFilters, TransactionView } from "../types";
 
 const COLOR = {
@@ -254,14 +254,22 @@ export async function buildSalesWorkbook({
     timeStyle: "short",
     timeZone: STORE.timezone,
   }).format(new Date());
-  const subtitle = `Periode: ${period}   |   Dibuat: ${generated} oleh ${generatedBy}`;
+  const truncated = transactions.length >= EXPORT_MAX_ROWS;
+  const subtitle =
+    `Periode: ${period}   |   Dibuat: ${generated} oleh ${generatedBy}` +
+    (truncated
+      ? `   |   PERINGATAN: dibatasi ${EXPORT_MAX_ROWS.toLocaleString("id-ID")} transaksi terlama, persempit periode.`
+      : "");
 
   // Laporan penjualan tidak menghitung transaksi arsip.
   const sales = transactions.filter((t) => !t.deletedAt);
+  const totalLabel = transactions.some((t) => t.deletedAt)
+    ? "Total (termasuk arsip)"
+    : "Total";
 
   buildSummarySheet(wb, sales, filters, period, subtitle);
-  buildTransactionsSheet(wb, transactions, subtitle);
-  buildItemsSheet(wb, transactions, subtitle);
+  buildTransactionsSheet(wb, transactions, subtitle, totalLabel);
+  buildItemsSheet(wb, transactions, subtitle, totalLabel);
 
   return wb.xlsx.writeBuffer();
 }
@@ -317,7 +325,7 @@ function buildSummarySheet(
     0,
   );
   const kpis: [string, number, string][] = [
-    ["Total penjualan", totalSales, RUPIAH],
+    ["Total penjualan (termasuk PPN)", totalSales, RUPIAH],
     ["Jumlah transaksi", sales.length, "#,##0"],
     [
       "Rata-rata per transaksi",
@@ -419,7 +427,7 @@ function buildSummarySheet(
   addSummaryTable(
     ws,
     row + 1,
-    "Produk terlaris (10 teratas)",
+    "Produk terlaris (10 teratas, berdasarkan qty)",
     [
       { header: "Produk", width: 0 },
       { header: "Qty", width: 0, format: "#,##0", align: "right" },
@@ -431,7 +439,7 @@ function buildSummarySheet(
       },
     ],
     [...byProduct.entries()]
-      .sort(([, a], [, b]) => b.revenue - a.revenue)
+      .sort(([, a], [, b]) => b.qty - a.qty || b.revenue - a.revenue)
       .slice(0, 10)
       .map(([name, p]) => [name, p.qty, p.revenue]),
     false,
@@ -439,7 +447,7 @@ function buildSummarySheet(
 
   if (!sales.length) {
     ws.mergeCells(8, 1, 8, 5);
-    ws.getCell(8, 1).value = `Tidak ada transaksi pada periode ${period}.`;
+    ws.getCell(8, 1).value = `Tidak ada transaksi aktif pada periode ${period}.`;
     ws.getCell(8, 1).font = {
       name: FONT,
       size: 11,
@@ -492,7 +500,12 @@ function addSummaryTable(
 
 /* ---------------- Transaksi ---------------- */
 
-function buildTransactionsSheet(wb: ExcelJS.Workbook, transactions: TransactionView[], subtitle: string) {
+function buildTransactionsSheet(
+  wb: ExcelJS.Workbook,
+  transactions: TransactionView[],
+  subtitle: string,
+  totalLabel: string,
+) {
   const ws = wb.addWorksheet("Transaksi");
   const columns: ColumnSpec[] = [
     { header: "No", width: 6, align: "center" }, // A
@@ -538,15 +551,26 @@ function buildTransactionsSheet(wb: ExcelJS.Workbook, transactions: TransactionV
         t.deletedAt ? "Arsip" : "Aktif",
       ],
       columns,
-      i % 2 === 1
+      i % 2 === 1,
     );
-    if (t.deletedAt) ws.getRow(r).font = { name: FONT, size: 10, italic: true, color: { argb: COLOR.muted } };
+    if (t.deletedAt)
+      ws.getRow(r).font = {
+        name: FONT,
+        size: 10,
+        italic: true,
+        color: { argb: COLOR.muted },
+      };
   });
 
   if (!transactions.length) {
     ws.mergeCells(HEADER + 1, 1, HEADER + 1, columns.length);
-    ws.getCell(HEADER + 1, 1).value = "Tidak ada transaksi yang cocok dengan filter.";
-    ws.getCell(HEADER + 1, 1).font = { name: FONT, italic: true, color: { argb: COLOR.muted } };
+    ws.getCell(HEADER + 1, 1).value =
+      "Tidak ada transaksi yang cocok dengan filter.";
+    ws.getCell(HEADER + 1, 1).font = {
+      name: FONT,
+      italic: true,
+      color: { argb: COLOR.muted },
+    };
     return;
   }
 
@@ -559,19 +583,31 @@ function buildTransactionsSheet(wb: ExcelJS.Workbook, transactions: TransactionV
     last,
     columns,
     {
-      7: transactions.reduce((s, t) => s + t.items.reduce((n, it) => n + it.quantity, 0), 0),
+      7: transactions.reduce(
+        (s, t) => s + t.items.reduce((n, it) => n + it.quantity, 0),
+        0,
+      ),
       8: transactions.reduce((s, t) => s + t.subtotal, 0),
       10: transactions.reduce((s, t) => s + t.ppnAmount, 0),
       11: transactions.reduce((s, t) => s + t.total, 0),
     },
-    "Total"
+    totalLabel,
   );
 
   ws.mergeCells(last + 3, 1, last + 3, columns.length);
-  ws.getCell(last + 3, 1).value = "Catatan: PPN = Subtotal × Tarif PPN (dibulatkan ke rupiah). Tarif tersimpan per transaksi, sehingga transaksi lama tetap memakai tarifnya saat itu.";
-  ws.getCell(last + 3, 1).font = { name: FONT, size: 9, italic: true, color: { argb: COLOR.muted } };
+  ws.getCell(last + 3, 1).value =
+    "Catatan: PPN = Subtotal × Tarif PPN (dibulatkan ke rupiah). Tarif tersimpan per transaksi, sehingga transaksi lama tetap memakai tarifnya saat itu.";
+  ws.getCell(last + 3, 1).font = {
+    name: FONT,
+    size: 9,
+    italic: true,
+    color: { argb: COLOR.muted },
+  };
 
-  ws.autoFilter = { from: { row: HEADER, column: 1 }, to: { row: last, column: columns.length } };
+  ws.autoFilter = {
+    from: { row: HEADER, column: 1 },
+    to: { row: last, column: columns.length },
+  };
 }
 
 /* ---------------- Detail item ---------------- */
@@ -580,6 +616,7 @@ function buildItemsSheet(
   wb: ExcelJS.Workbook,
   transactions: TransactionView[],
   subtitle: string,
+  totalLabel: string,
 ) {
   const ws = wb.addWorksheet("Detail Item");
   const columns: ColumnSpec[] = [
@@ -591,7 +628,7 @@ function buildItemsSheet(
     { header: "Produk", width: 28 },
     { header: "Harga Satuan", width: 16, format: RUPIAH, align: "right" },
     { header: "Qty", width: 8, format: "#,##0", align: "right" },
-    { header: "Subtotal Item", width: 16, format: RUPIAH, align: "right" },
+    { header: "Subtotal Item (sebelum PPN)", width: 20, format: RUPIAH, align: "right" },
     { header: "Catatan", width: 30 },
     { header: "Status", width: 11, align: "center" },
   ];
@@ -637,7 +674,7 @@ function buildItemsSheet(
       8: items.reduce((s, { it }) => s + it.quantity, 0),
       9: items.reduce((s, { it }) => s + it.subtotal, 0),
     },
-    "Total",
+    totalLabel,
   );
   ws.autoFilter = {
     from: { row: HEADER, column: 1 },

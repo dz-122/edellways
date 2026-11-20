@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     template: "%s · Edellways",
   },
   description:
-    "Edellways Florist Ambon menyediakan bouquet, hampers, giftbox, dan rangkaian bunga untuk berbagai momen spesial.",
+    "Edellways Florist Ambon menyediakan bouquet, hampers, dan giftbox untuk berbagai momen spesial.",
   robots: { index: true, follow: true },
 };
 

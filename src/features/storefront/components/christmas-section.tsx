@@ -40,7 +40,7 @@ export function ChristmasSection({ products }: { products: CatalogProduct[] }) {
             Spesial <em className="bg-gradient-to-b from-gold-soft to-gold bg-clip-text italic text-transparent">Natal</em>
           </h2>
           <p className="mx-auto mt-4 max-w-md text-sm text-cream/75 sm:text-base">
-            Rangkaian bunga untuk hadiah, meja makan, dan ucapan hangat di hari Natal.
+            Rangkaian spesial untuk hadiah, meja makan, dan ucapan hangat di hari Natal.
           </p>
         </header>
 

@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = `${product.name} - Bunga ${SITE.city}`;
   const description = (
     product.description ||
-    `${product.name} dari ${SITE.name}, toko bunga di ${SITE.city}, ${SITE.region}. Harga ${formatRupiah(product.price)}. Pesan lewat WhatsApp.`
+    `${product.name} dari ${SITE.name}, florist di ${SITE.city}, ${SITE.region}. Harga ${formatRupiah(product.price)}. Pesan lewat WhatsApp.`
   ).slice(0, 158);
   const path = `/produk/${product.slug}`;
   return {
