@@ -1,20 +1,21 @@
-// Semua teks UI halaman katalog ada di sini. Ganti ke bahasa Indonesia cukup dengan mengubah nilainya.
+
 export const CATALOG_COPY = {
-  collectionsHeading: "Explore our Collections",
+  collectionsHeading: "Jelajahi Koleksi Kami",
   allCollections: "Semua Koleksi",
   allOccasions: "Semua Acara",
-  occasionLabel: "Filter by occasion",
-  searchPlaceholder: "Search for flowers...",
-  sortBy: "Sort by:",
+  occasionLabel: "Filter berdasarkan acara",
+  searchPlaceholder: "Cari rangkaian bunga...",
+  sortBy: "Urutkan:",
   showing: (n: number) =>
-    `Showing ${n} ${n === 1 ? "arrangement" : "arrangements"}`,
-  clearFilters: "Clear filters",
-  empty: "No arrangements found",
-  emptyCta: "View all collections",
+    `Menampilkan ${n} rangkaian bunga`,
+  clearFilters: "Hapus Filter",
+  empty: "Rangkaian bunga tidak ditemukan",
+  emptyCta: "Lihat Semua Koleksi",
   swipeHint: "Geser untuk melihat lainnya",
-  previous: "Previous",
-  next: "Next",
-  loadingMore: "Loading more arrangements",
-  retry: "Couldn't load more. Tap to retry.",
-  endOfList: (n: number) => `You've seen all ${n} arrangements`,
+  previous: "Sebelumnya",
+  next: "Selanjutnya",
+  loadingMore: "Memuat rangkaian bunga lainnya...",
+  retry: "Gagal memuat. Ketuk untuk mencoba lagi.",
+  endOfList: (n: number) =>
+    `Kamu telah melihat semua ${n} rangkaian bunga`,
 } as const;
