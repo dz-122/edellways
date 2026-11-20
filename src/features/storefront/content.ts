@@ -83,5 +83,5 @@ export const INFO = {
   instagram: STORE.instagram,
   tiktok: STORE.tiktok,
   instagramUrl: `https://instagram.com/${STORE.instagram.replace("@", "")}`,
-  tiktokUrl: `https://tiktok.com/${STORE.tiktok.replace("@", "")}`,
+  tiktokUrl: `https://www.tiktok.com/@${STORE.tiktok.replace(/^@/, "")}`,
 };
