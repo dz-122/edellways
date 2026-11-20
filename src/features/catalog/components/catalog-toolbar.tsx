@@ -40,7 +40,7 @@ export function CatalogToolbar({ facets }: { facets: CatalogFacets }) {
           type="text"
           inputMode="search"
           enterKeyHint="search"
-          className="h-10 rounded-full border-forest/15 bg-white pl-11 pr-10"
+          className="h-10 rounded-full border-black/15 bg-white pl-11 pr-10 focus-visible:border-black focus-visible:ring-black/15"
           placeholder={CATALOG_COPY.searchPlaceholder}
           aria-label={CATALOG_COPY.searchPlaceholder}
           value={query}

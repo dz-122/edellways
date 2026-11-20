@@ -13,7 +13,7 @@ export function SortSelect() {
       </span>
       <NativeSelect
         aria-label={CATALOG_COPY.sortBy}
-        className="h-10 rounded-full border-forest/15 bg-white pl-4 pr-8 sm:pl-[4.6rem]"
+        className="h-10 rounded-full border-black/15 bg-white pl-4 pr-8 focus-visible:border-black focus-visible:ring-black/15 sm:pl-[4.6rem]"
         value={filters.sort}
         onChange={(e) => update({ urut: e.target.value === "terbaru" ? null : e.target.value })}
       >

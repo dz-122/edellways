@@ -110,7 +110,7 @@
 }
 .scroll-minimal:hover,
 .scroll-minimal:focus-within {
-  scrollbar-color: rgb(31 77 58 / 0.35) transparent;
+  scrollbar-color: rgb(0 0 0 / 0.3) transparent;
 }
 @media (hover: none) {
   .scroll-minimal {
@@ -123,6 +123,7 @@
   --color-cranberry: #a3182f;
   --color-cranberry-deep: #7d1224;
   --color-gold: #d4af6a;
+  --color-gold-deep: #9a7428;
   --color-gold-soft: #f1e0b0;
   --color-pine: #0f3b2a;
   --color-pine-deep: #0a2a1e;
@@ -162,4 +163,36 @@
 @media (prefers-reduced-motion: reduce) {
   .bulb, .ornament { animation: none; }
   .snowflake { display: none; }
+}
+
+/* ===== Animasi masuk ===== */
+/* Disembunyikan hanya jika JS aktif & pengguna tidak minta mengurangi gerak. Tanpa itu, konten tetap tampil. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  [data-reveal][data-shown] { opacity: 1; transform: none; }
+
+  [data-split] [data-word] {
+    opacity: 0;
+    transform: translateY(0.5em);
+    filter: blur(8px);
+    transition: opacity 0.8s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.8s ease;
+  }
+  [data-split][data-shown] [data-word] { opacity: 1; transform: none; filter: none; }
+}
+
+@keyframes hero-in {
+  from { opacity: 0; transform: scale(1.06); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-in { animation: hero-in 1.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .rise-in { animation: rise-in 1s cubic-bezier(0.22, 1, 0.36, 1) 0.9s both; }
 }

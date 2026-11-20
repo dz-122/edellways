@@ -6,7 +6,7 @@ import { container } from "../styles";
 
 export function SiteFooter() {
   return (
-    <footer className="bg-[#121212] text-cream/80">
+    <footer className="bg-black text-cream/80">
       <div className={`${container} grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr]`}>
         <div>
           <p className="font-brand color-brand text-5xl text-cream">Edellways</p>

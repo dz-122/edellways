@@ -26,11 +26,11 @@ const parisienne = Parisienne({
 
 export const metadata: Metadata = {
   title: {
-    default: "Edellways | Florist & Gift",
+    default: "Edellways Florist Ambon",
     template: "%s · Edellways",
   },
   description:
-    "Buket dan rangkaian bunga buatan tangan. Pilih, masukkan keranjang, dan pesan lewat WhatsApp.",
+    "Edellways Florist Ambon menyediakan bouquet, hampers, giftbox, dan rangkaian bunga untuk berbagai momen spesial.",
   robots: { index: true, follow: true },
 };
 

@@ -13,7 +13,7 @@ export function CollectionSidebar({ facets }: { facets: CatalogFacets }) {
   return (
     <aside
       aria-labelledby="sidebar-collections"
-      className="scroll-minimal hidden lg:block lg:overflow-y-auto lg:p-1"
+      className="scroll-minimal hidden lg:sticky lg:top-24 lg:-m-1 lg:block lg:max-h-[calc(100dvh-7rem)] lg:overflow-y-auto lg:p-1"
     >
       <nav aria-label="Collections">
         <ul className="space-y-2.5">
@@ -22,13 +22,13 @@ export function CollectionSidebar({ facets }: { facets: CatalogFacets }) {
             const disabled = !active && c.count === 0; // tidak ada hasil -> tampil redup, tidak bisa diklik
             const className = cn(
               "flex h-12 w-full items-center justify-between gap-3 rounded-full border px-5 text-[15px] transition",
-              active ? "border-forest bg-forest text-cream" : "border-forest/20 text-ink/85 hover:bg-white/70",
+              active ? "border-black bg-black text-white" : "border-black/20 text-ink/85 hover:bg-white/70",
               disabled && "pointer-events-none opacity-40"
             );
             const label = (
               <>
                 <span className="truncate">{c.name}</span>
-                <span className={cn("text-xs", active ? "text-cream/70" : "text-ink/45")}>{c.count}</span>
+                <span className={cn("text-xs", active ? "text-white/70" : "text-ink/45")}>{c.count}</span>
               </>
             );
             return (

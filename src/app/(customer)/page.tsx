@@ -4,10 +4,8 @@ import { SITE } from "@/config/site";
 import { getHomeData } from "@/features/catalog/queries";
 import { BrandStory } from "@/features/storefront/components/brand-story";
 import { ChristmasSection } from "@/features/storefront/components/christmas-section";
-import { Faq } from "@/features/storefront/components/faq";
 import { Hero } from "@/features/storefront/components/hero";
 import { HowToOrder } from "@/features/storefront/components/how-to-order";
-import { LocalIntro } from "@/features/storefront/components/local-intro";
 import { Occasions } from "@/features/storefront/components/occasions";
 import { PerksMarquee } from "@/features/storefront/components/perks-marquee";
 import { FeaturedCollection } from "@/features/storefront/components/product-sections";
@@ -21,33 +19,26 @@ export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: {
-    absolute: `Toko Bunga ${SITE.city} | ${SITE.name}: Buket & Rangkaian Bunga`,
+    absolute: `${SITE.name} | Bouquet, Hampers & Giftbox`,
   },
-  description: `${SITE.name}, toko bunga di ${SITE.city} (${SITE.region}). Buket wisuda, wedding, ulang tahun, dan rangkaian bunga buatan tangan. Pesan lewat WhatsApp.`,
+  description: `Edellways Florist ${SITE.city} menyediakan bouquet, hampers, giftbox, dan rangkaian bunga untuk wisuda, wedding, ulang tahun, serta berbagai momen spesial. Pesan dengan mudah melalui WhatsApp.`,
   alternates: { canonical: "/" },
 };
 
-export default async function HomePage() {
-  const { collections, occasions, newArrivals, featured, christmas } =
-    await getHomeData();
-  const heroProduct = newArrivals.find((p) => p.image) ?? null; // hanya untuk gambar hero
 
+export default async function HomePage() {
+  const { occasions, featured, christmas } = await getHomeData();
   return (
     <>
       <JsonLd data={[buildFloristSchema(), buildWebsiteSchema()]} />
-        <Hero
-          image={heroProduct?.image ?? null}
-          productName={heroProduct?.name ?? null}
-        />
+        <Hero />
       <PerksMarquee />
       <Occasions occasions={occasions} />
       <ChristmasSection products={christmas} />
       <FeaturedCollection products={featured} />
-      <LocalIntro />
       <HowToOrder />
       <BrandStory />
       <Testimonials />
-      <Faq />
       <StoreInfo />
       <StoreMap />
     </>

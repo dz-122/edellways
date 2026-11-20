@@ -1,22 +1,38 @@
+
 import Link from "next/link";
-import type { CategoryLink } from "@/features/catalog/types";
+import { Reveal } from "@/components/shared/reveal";
 import { container } from "../styles";
 
-export function Occasions({ occasions }: { occasions: CategoryLink[] }) {
-  const available = occasions.filter((o) => o.count > 0); // hindari halaman hasil kosong
-  if (available.length === 0) return null;
+const categories = [
+  { name: "Bouquet", slug: "bouquet" },
+  { name: "Hampers", slug: "hampers" },
+  { name: "Giftbox", slug: "giftbox" },
+];
+
+export function Occasions() {
   return (
-    <section className={`${container} py-14`}>
-      <p className="mb-4 text-center font-display text-2xl">Ucapan apa hari ini</p>
-      <ul className="flex flex-wrap justify-center gap-2.5">
-        {available.map((o) => (
-          <li key={o.id}>
-            <Link href={`/koleksi?acara=${o.slug}`} className="inline-block rounded-full bg-blush/60 px-5 py-2 text-sm text-forest transition hover:bg-blush">
-              {o.name}
-            </Link>
-          </li>
-        ))}
-      </ul>
+    <section className="bg-white">
+      <div className={`${container} py-14 md:py-16`}>
+        <Reveal
+          as="p"
+          className="mb-6 text-center font-display text-2xl md:text-3xl"
+        >
+          Temukan Hadiah Istimewa
+        </Reveal>
+
+        <ul className="flex flex-wrap justify-center gap-2.5">
+          {categories.map((category, i) => (
+            <Reveal as="li" key={category.slug} delay={i * 50}>
+              <Link
+                href={`/koleksi?kategori=${category.slug}`}
+                className="inline-block rounded-full border border-forest/25 px-5 py-2 text-sm text-forest transition hover:border-forest hover:bg-forest hover:text-cream"
+              >
+                {category.name}
+              </Link>
+            </Reveal>
+          ))}
+        </ul>
+      </div>
     </section>
   );
 }

@@ -16,7 +16,7 @@ export function StoreInfo() {
       <div className="rounded-[2rem] bg-forest p-8 text-cream md:p-12">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr]">
           <div>
-            <SectionHeading tone="dark" eyebrow="Mampir atau hubungi" title="Kami siap" accent="membantu" />
+            <SectionHeading tone="dark" eyebrow="Mampir atau hubungi" title="Kami siap membantu"/>
             <p className="max-w-sm text-cream/75">Punya permintaan khusus? Ceritakan momen dan anggaranmu, kami bantu siapkan.</p>
             <a href={buildChatUrl("Halo Edellways, saya ingin berkonsultasi soal rangkaian bunga.")} className="mt-6 inline-flex h-12 items-center gap-2 rounded-full bg-cream px-6 font-medium text-forest transition hover:bg-blush">
               <MessageCircle className="size-4" /> Chat WhatsApp

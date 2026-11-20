@@ -8,6 +8,7 @@ import { requireSession } from "@/features/auth/session";
 import { SalesChart } from "@/features/dashboard/components/sales-chart";
 import { getDashboardData } from "@/features/dashboard/queries";
 import { formatDateTime, formatRupiah } from "@/lib/format";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Ringkasan" };
 
@@ -25,28 +26,47 @@ export default async function DashboardPage() {
 
   return (
     <>
-      <PageHeader title={`Halo, ${session.name.split(" ")[0]}`} description="Ringkasan aktivitas toko Edellways.">
-        <Button asChild>
-          <Link href="/admin/dashboard/transaksi">Catat transaksi</Link>
-        </Button>
-      </PageHeader>
+   <PageHeader title={`Halo, ${session.name.split(" ")[0]}`} description="Ringkasan aktivitas toko Edellways.">
+  <Button asChild className="w-full sm:w-auto">
+    <Link href="/admin/dashboard/transaksi">Catat transaksi</Link>
+  </Button>
+</PageHeader>
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {stats.map(({ label, value, hint, icon: Icon }) => (
-          <Card key={label} className="gap-2 py-5">
-            <CardHeader className="flex-row items-center justify-between">
-              <CardDescription>{label}</CardDescription>
-              <span className="grid size-8 place-items-center rounded-full bg-accent text-accent-foreground">
-                <Icon className="size-4" />
-              </span>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-semibold tracking-tight">{value}</p>
-              <p className="mt-1 text-xs text-muted-foreground">{hint}</p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+{/* HP: baris 1 = total penjualan, baris 2 = 3 kartu sisanya. Tablet: 2 kolom. Desktop: 4 kolom. */}
+<div className="grid grid-cols-3 gap-3 sm:grid-cols-2 sm:gap-4 xl:grid-cols-4">
+  {stats.map(({ label, value, hint, icon: Icon }, i) => {
+    const hero = i === 0;
+    return (
+      <Card
+        key={label}
+        className={cn(
+          "gap-2 py-4 sm:py-5",
+          hero && "col-span-3 border-black bg-forest text-white sm:col-span-1"
+        )}
+      >
+        <CardHeader className="flex items-center justify-between gap-2 px-3 sm:px-6">
+          <CardDescription className={cn("text-[11px] leading-tight sm:text-sm", hero && "text-sm text-white/60")}>
+            {label}
+          </CardDescription>
+          <span
+            className={cn(
+              "size-8 shrink-0 place-items-center rounded-full",
+              hero ? "grid bg-gold/15 text-gold" : "hidden bg-accent text-accent-foreground sm:grid"
+            )}
+          >
+            <Icon className="size-4" />
+          </span>
+        </CardHeader>
+        <CardContent className="px-3 sm:px-6">
+          <p className={cn("text-xl font-semibold tracking-tight sm:text-2xl", hero && "text-3xl text-gold-soft sm:text-2xl")}>
+            {value}
+          </p>
+          <p className={cn("mt-1 text-xs", hero ? "text-white/55" : "hidden text-muted-foreground sm:block")}>{hint}</p>
+        </CardContent>
+      </Card>
+    );
+  })}
+</div>
 
       <div className="mt-4 grid gap-4 xl:grid-cols-[1.6fr_1fr]">
         <Card>

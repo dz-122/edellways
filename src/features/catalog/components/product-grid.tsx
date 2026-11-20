@@ -16,7 +16,7 @@ type Snapshot = {
   items: CatalogProduct[];
   page: number;
   pages: number;
-  scrollTop: number;
+  scrollY: number;
 };
 
 type Props = {
@@ -43,7 +43,6 @@ export function ProductGrid({
   const [pages, setPages] = useState(pageCount);
   const [status, setStatus] = useState<Status>("idle");
   const loading = useRef(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
   const sentinel = useRef<HTMLDivElement>(null);
   const hasMore = page < pages;
 
@@ -66,7 +65,7 @@ export function ProductGrid({
       setPages(snap.pages);
       requestAnimationFrame(() =>
         requestAnimationFrame(() =>
-          scrollRef.current?.scrollTo({ top: snap.scrollTop }),
+          window.scrollTo({ top: snap.scrollY, behavior: "instant" }),
         ),
       );
     } catch {}
@@ -94,14 +93,13 @@ export function ProductGrid({
     }
   }, [filters, page, pages]);
 
-  // Muat batch berikutnya saat penanda di dasar daftar mendekati dasar area scroll.
+  // observer: tanpa root
   useEffect(() => {
     const el = sentinel.current;
-    const root = scrollRef.current;
-    if (!el || !root || status !== "idle" || !hasMore) return;
+    if (!el || status !== "idle" || !hasMore) return;
     const observer = new IntersectionObserver(
       (entries) => entries[0].isIntersecting && loadNext(),
-      { root, rootMargin: "600px 0px" },
+      { rootMargin: "800px 0px" },
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -114,7 +112,7 @@ export function ProductGrid({
         items,
         page,
         pages,
-        scrollTop: scrollRef.current?.scrollTop ?? 0,
+        scrollY: window.scrollY,
       };
       sessionStorage.setItem(cacheKey, JSON.stringify(snap));
       sessionStorage.setItem(RESTORE_FLAG, cacheKey);
@@ -123,17 +121,13 @@ export function ProductGrid({
 
   return (
     <div
-      ref={scrollRef}
       role="region"
       aria-label="Arrangements"
-      tabIndex={0}
       onClickCapture={(e) =>
         (e.target as HTMLElement).closest('a[href^="/produk/"]') &&
         saveSnapshot()
       }
-      className="min-h-0 flex-1 overflow-y-auto pb-6 pr-1 outline-none focus-visible:ring-2 focus-visible:ring-forest/30 lg:pr-2"
     >
-
       <div className={GRID}>
         {items.map((product) => (
           <ProductCard key={product.id} product={product} />

@@ -35,9 +35,8 @@ export function buildCatalogMetadata(filters: CatalogFilters, taxonomy: CatalogT
   });
   const isVariant = Boolean(filters.q) || filters.sort !== "terbaru" || filters.availableOnly || page > 1 || Boolean(collection && occasion) || hasUnknown;
 
-  const title =
-    occasion && !collection ? `Bunga ${occasion.name} ${SITE.city}` : collection && !occasion ? `${collection.name} | Koleksi Bunga ${SITE.city}` : `Koleksi Bunga ${SITE.city}`;
-  const description = `Buket dan rangkaian bunga ${SITE.name} di ${SITE.city}, ${SITE.region}${occasion && !collection ? ` untuk ${occasion.name.toLowerCase()}` : ""}. Pesan lewat WhatsApp.`;
+  const title = "Edellways Florist Ambon"
+  const description = `Bouquet, hampers, dan giftbox ${SITE.name} di ${SITE.city}, ${SITE.region}${occasion && !collection ? ` untuk ${occasion.name.toLowerCase()}` : ""}. Pesan lewat WhatsApp.`;
 
   return {
     title,

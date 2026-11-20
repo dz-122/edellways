@@ -10,7 +10,8 @@ type Props = {
   activeKey?: string; // saat berubah, item aktif dipusatkan
 };
 
-/** Baris yang bisa digeser horizontal, dengan efek pudar di tepi dan petunjuk geser. */
+const FADE = "2rem";
+
 export function ScrollRow({ children, className, hint, activeKey }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [edges, setEdges] = useState({ left: false, right: false });
@@ -19,7 +20,9 @@ export function ScrollRow({ children, className, hint, activeKey }: Props) {
   const measure = useCallback(() => {
     const el = ref.current;
     if (!el) return;
-    setEdges({ left: el.scrollLeft > 4, right: el.scrollLeft + el.clientWidth < el.scrollWidth - 4 });
+    const left = el.scrollLeft > 4;
+    const right = el.scrollLeft + el.clientWidth < el.scrollWidth - 4;
+    setEdges((prev) => (prev.left === left && prev.right === right ? prev : { left, right }));
   }, []);
 
   useEffect(() => {
@@ -40,6 +43,16 @@ export function ScrollRow({ children, className, hint, activeKey }: Props) {
     el.scrollTo({ left: Math.max(0, left), behavior: "smooth" });
   }, [activeKey]);
 
+  const { left, right } = edges;
+  const mask =
+    left && right
+      ? `linear-gradient(to right, transparent, #000 ${FADE}, #000 calc(100% - ${FADE}), transparent)`
+      : left
+        ? `linear-gradient(to right, transparent, #000 ${FADE})`
+        : right
+          ? `linear-gradient(to right, #000 calc(100% - ${FADE}), transparent)`
+          : undefined;
+
   return (
     <div>
       <div className="relative">
@@ -49,19 +62,23 @@ export function ScrollRow({ children, className, hint, activeKey }: Props) {
             measure();
             if (e.currentTarget.scrollLeft > 8) setTouched(true);
           }}
-          className={cn("relative flex snap-x overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden", className)}
+          style={{ maskImage: mask, WebkitMaskImage: mask }}
+          className={cn(
+            "flex overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+            className,
+          )}
         >
           {children}
         </div>
-        {edges.left && <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-cream to-transparent" />}
-        {edges.right && (
-          <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 flex w-12 items-center justify-end bg-gradient-to-l from-cream via-cream/80 to-transparent pr-1">
-            <ChevronRight className="size-4 text-forest motion-safe:animate-pulse" />
-          </div>
+        {right && (
+          <ChevronRight
+            aria-hidden
+            className="pointer-events-none absolute right-0 top-1/2 size-4 -translate-y-1/2 text-black motion-safe:animate-pulse"
+          />
         )}
       </div>
-      {hint && edges.right && !touched && (
-        <p className="mt-2 flex items-center justify-center gap-1 text-xs text-ink/55 md:hidden">
+      {hint && right && !touched && (
+        <p className="mt-1.5 flex items-center justify-center gap-1 text-xs text-ink/50 md:hidden">
           {hint} <ArrowRight className="size-3.5 motion-safe:animate-pulse" />
         </p>
       )}

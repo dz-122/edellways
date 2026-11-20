@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id" className={jakarta.variable}>
+    <html lang="id" data-scroll-behavior="smooth" className={jakarta.variable}>
       <body className="font-sans antialiased">
         {children}
         <Toaster richColors position="top-right" />

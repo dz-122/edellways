@@ -6,7 +6,7 @@ import type { CatalogFilters } from "../types";
 
 type Props = { filters: CatalogFilters; page: number; pageCount: number };
 
-const base = "inline-flex h-10 items-center gap-1 rounded-full border border-forest/25 px-4 text-sm text-forest transition";
+const base = "inline-flex h-10 items-center gap-1 rounded-full border border-black/25 px-4 text-sm text-black transition";
 
 export function CatalogPagination({ filters, page, pageCount }: Props) {
   if (pageCount <= 1) return null;
@@ -16,13 +16,13 @@ export function CatalogPagination({ filters, page, pageCount }: Props) {
   return (
     <nav aria-label="Pagination" className="mt-10 flex items-center justify-center gap-4">
       {page > 1 ? (
-        <Link href={buildCatalogHref(filters, { page: page - 1 })} rel="prev" className={`${base} hover:bg-forest hover:text-cream`}>{prev}</Link>
+        <Link href={buildCatalogHref(filters, { page: page - 1 })} rel="prev" className={`${base} hover:bg-black hover:text-white`}>{prev}</Link>
       ) : (
         <span aria-disabled className={`${base} opacity-40`}>{prev}</span>
       )}
       <span className="text-sm text-ink/65">{page} / {pageCount}</span>
       {page < pageCount ? (
-        <Link href={buildCatalogHref(filters, { page: page + 1 })} rel="next" className={`${base} hover:bg-forest hover:text-cream`}>{next}</Link>
+        <Link href={buildCatalogHref(filters, { page: page + 1 })} rel="next" className={`${base} hover:bg-black hover:text-white`}>{next}</Link>
       ) : (
         <span aria-disabled className={`${base} opacity-40`}>{next}</span>
       )}

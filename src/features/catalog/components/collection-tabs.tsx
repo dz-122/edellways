@@ -14,12 +14,12 @@ export function CollectionTabs({ facets }: { facets: CatalogFacets }) {
 
   return (
     <nav aria-label={CATALOG_COPY.collectionsHeading}>
-      <ScrollRow hint={CATALOG_COPY.swipeHint} activeKey={filters.collection} className="gap-1">
+        <ScrollRow hint={CATALOG_COPY.swipeHint} activeKey={filters.collection} className="-mx-4 gap-1 px-4 md:-mx-6 md:px-6">
         {items.map((c) => {
           const active = filters.collection === c.slug;
           const disabled = !active && c.count === 0; // tidak ada hasil -> redup, tidak bisa diklik
           const className = cn(
-            "shrink-0 grow basis-auto snap-start whitespace-nowrap rounded-xl px-4 py-2.5 text-center text-[15px] transition",
+            "shrink-0 grow basis-auto whitespace-nowrap rounded-xl px-4 py-2.5 text-center text-[15px] transition",
             active ? "bg-blush/60 font-medium text-forest" : "text-ink/75 hover:bg-white",
             disabled && "pointer-events-none opacity-35"
           );
