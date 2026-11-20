@@ -11,7 +11,7 @@ export const CATALOG_COPY = {
   clearFilters: "Clear filters",
   empty: "No arrangements found",
   emptyCta: "View all collections",
-  swipeHint: "Swipe to see more collections",
+  swipeHint: "Geser untuk melihat lainnya",
   previous: "Previous",
   next: "Next",
   loadingMore: "Loading more arrangements",
