@@ -19,7 +19,7 @@ export function CartDrawer() {
   const checkout = () =>
     startTransition(async () => {
       if (!hasWhatsAppNumber()) {
-        toast.error("Nomor WhatsApp toko belum diatur.");
+        toast.error("Nomor WhatsApp toko belum diatur.", { position: "top-center" });
         return;
       }
 
@@ -30,7 +30,7 @@ export function CartDrawer() {
 
       if (result.unavailable.length || priceChanged) {
         const reasons = [...result.unavailable, ...(priceChanged ? ["Harga ada yang diperbarui."] : [])];
-        toast.warning(`Keranjang diperbarui. ${reasons.join(" ")} Periksa lalu checkout lagi.`);
+        toast.warning(`Keranjang diperbarui. ${reasons.join(" ")} Periksa lalu checkout lagi.`, { position: "top-center" });
         return;
       }
       if (!result.items.length) return;

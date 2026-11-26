@@ -32,8 +32,8 @@ export function AddToCartPanel({ product }: { product: CatalogProduct }) {
   const t = calculateOrder([{ unitPrice: product.price, quantity }]);
 
   const handleAdd = () => {
-    const cart = add(item, quantity);
-    toast.success(`${product.name} berhasil ditambahkan`);
+    add(item, quantity);
+  toast.success(`${product.name} berhasil ditambahkan`, { id: "cart-add" });
   };
 
   return (

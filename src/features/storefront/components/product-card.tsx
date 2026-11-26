@@ -25,13 +25,13 @@ export function ProductCard({
   const mono = tone === "mono";
 
   const handleAdd = () => {
-    const cart = add({
+    add({
       productId: product.id,
       name: product.name,
       image: product.image,
       price: product.price,
     });
-    toast.success(`${product.name} berhasil ditambahkan`);
+    toast.success(`${product.name} berhasil ditambahkan`, { id: "cart-add" });
   };
 
   return (
