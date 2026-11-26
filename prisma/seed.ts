@@ -8,12 +8,66 @@ const slugify = (v: string) => v.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-"
 // Nama bisa diubah kapan saja dari admin.
 const COLLECTIONS = ["Edell Essential", "Edell Signature"];
 const OCCASIONS = ["Wisuda", "Wedding", "Ulang Tahun", "Anniversary", "Ucapan Duka", "Hadiah"];
+const PRODUCTS = [
+  // Edell Essential
+  { name: "Evergreen Essential", price: 200000, collection: "Edell Essential" },
+  { name: "Midnight Essential", price: 200000, collection: "Edell Essential" },
+  { name: "Verdant Essential", price: 200000, collection: "Edell Essential" },
+  { name: "Aura Essential", price: 200000, collection: "Edell Essential" },
+  { name: "Arctic Essential", price: 200000, collection: "Edell Essential" },
+  { name: "Firelight Essential", price: 200000, collection: "Edell Essential" },
+
+  // Edell Signature
+  { name: "Sweet Signature", price: 220000, collection: "Edell Signature" },
+  { name: "Aurora Signature", price: 220000, collection: "Edell Signature" },
+  { name: "Rough Signature", price: 220000, collection: "Edell Signature" },
+  { name: "Spectrum Signature", price: 220000, collection: "Edell Signature" },
+  { name: "Atelier Signature", price: 220000, collection: "Edell Signature" },
+  { name: "Autumn Signature", price: 220000, collection: "Edell Signature" },
+  { name: "Frostline Signature", price: 220000, collection: "Edell Signature" },
+  { name: "Citrus Signature", price: 220000, collection: "Edell Signature" },
+  { name: "Azure Signature", price: 220000, collection: "Edell Signature" },
+  { name: "Harmony Signature", price: 220000, collection: "Edell Signature" },
+];
 
 async function seedCategories(names: string[], type: CategoryType) {
   for (const name of names) {
     const slug = slugify(name);
     await prisma.category.upsert({ where: { slug }, update: {}, create: { name, slug, type } });
   }
+}
+
+async function seedProducts() {
+  for (const product of PRODUCTS) {
+    const slug = slugify(product.name);
+
+    const category = await prisma.category.findUnique({
+      where: {
+        slug: slugify(product.collection),
+      },
+    });
+
+    if (!category) {
+      throw new Error(`Kategori tidak ditemukan: ${product.collection}`);
+    }
+
+    await prisma.product.upsert({
+      where: { slug },
+      update: {},
+      create: {
+        name: product.name,
+        slug,
+        description: "",
+        categoryId: category.id,
+        price: product.price,
+        isActive: true,
+        soldOut: false,
+        badge: null,
+      },
+    });
+  }
+
+  console.log(`Produk katalog berhasil diproses: ${PRODUCTS.length}`);
 }
 
 // Mengisi slug untuk produk lama. Aman dijalankan berulang.
@@ -45,6 +99,7 @@ async function main() {
 
   await seedCategories(COLLECTIONS, "COLLECTION");
   await seedCategories(OCCASIONS, "OCCASION");
+  await seedProducts();
   await backfillProductSlugs();
   console.log(`Seed selesai. Login: ${email}`);
 }

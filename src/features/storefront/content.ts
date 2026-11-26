@@ -71,9 +71,9 @@ export const ABOUT = {
 
 // CONTOH: ganti dengan ulasan pelanggan asli sebelum dipublikasikan.
 export const TESTIMONIALS = [
-  { name: "Nama Pelanggan", occasion: "Ulang tahun", text: "Tulis ulasan asli pelanggan di sini." },
-  { name: "Nama Pelanggan", occasion: "Wisuda", text: "Tulis ulasan asli pelanggan di sini." },
-  { name: "Nama Pelanggan", occasion: "Anniversary", text: "Tulis ulasan asli pelanggan di sini." },
+  { name: "Messi", occasion: "World Cup", text: "Info lawan" },
+  { name: "John Wick", occasion: "Duka Cita", text: "For ma dawg." },
+  { name: "Wowo", occasion: "Anniversary", text: "For ma teddy bear." },
 ];
 
 export const INFO = {
