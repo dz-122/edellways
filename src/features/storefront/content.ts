@@ -18,10 +18,22 @@ export const PERKS = [
 ];
 
 export const STEPS = [
-  { title: "Pilih bunga", text: "Jelajahi koleksi dan pilih rangkaian yang paling pas untuk momenmu." },
-  { title: "Masukkan keranjang", text: "Atur jumlah, lihat estimasi subtotal, dan ubah kapan saja." },
-  { title: "Kirim lewat WhatsApp", text: "Satu klik, pesananmu tersusun rapi di chat dengan admin kami." },
-  { title: "Konfirmasi & bayar", text: `Admin memastikan ketersediaan, total akhir, dan jadwal pengiriman di ${SITE.city}.` },
+  {
+    title: "Pilih bunga",
+    text: "Jelajahi koleksi dan pilih rangkaian yang paling pas untuk momenmu.",
+  },
+  {
+    title: "Masukkan keranjang",
+    text: "Atur jumlah, lihat estimasi subtotal, dan ubah kapan saja.",
+  },
+  {
+    title: "Kirim lewat WhatsApp",
+    text: "Satu klik, pesananmu tersusun rapi di chat dengan admin kami.",
+  },
+  {
+    title: "Konfirmasi & bayar",
+    text: `Admin memastikan ketersediaan, total akhir, dan jadwal pengiriman di ${SITE.city}.`,
+  },
 ];
 
 export const ABOUT = {
@@ -71,15 +83,15 @@ export const ABOUT = {
 
 // CONTOH: ganti dengan ulasan pelanggan asli sebelum dipublikasikan.
 export const TESTIMONIALS = [
-  { name: "Messi", occasion: "World Cup", text: "Info lawan" },
-  { name: "John Wick", occasion: "Duka Cita", text: "For ma dawg." },
-  { name: "Wowo", occasion: "Anniversary", text: "For ma teddy bear." },
+  { name: "Syntia", occasion: "Ulang tahun", text: "Pilih di website, kirim ke WhatsApp, selesai. Simpel." },
+  { name: "Putra", occasion: "Belasungkawa", text: "Pesan mendadak, responsnya cepat, hasilnya rapi." },
+  { name: "Maria", occasion: "Anniversary", text: "Adminnya jujur soal stok dan kasih pengganti. Hasilnya lebih oke." },
 ];
 
 export const INFO = {
   address: `${SITE.streetAddress}, ${SITE.city}, ${SITE.region}`,
   hours: "Setiap hari, 10.00 - 21.00",
-  delivery: `Pengiriman ke alamat tujuan di area ${SITE.city}. Biaya dan jadwal dikonfirmasi lewat WhatsApp.`, // sesuaikan
+  delivery: `Pengiriman ke alamat tujuan di area ${SITE.city}. Biaya dan jadwal dikonfirmasi lewat WhatsApp.`,
   instagram: STORE.instagram,
   tiktok: STORE.tiktok,
   instagramUrl: `https://instagram.com/${STORE.instagram.replace("@", "")}`,
