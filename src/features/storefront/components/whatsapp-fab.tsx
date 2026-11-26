@@ -22,7 +22,7 @@ export function WhatsAppFab() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat WhatsApp Edellways"
-      className="group fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-40 inline-flex h-14 items-center justify-center rounded-full bg-[#25D366] px-4 text-white shadow-[0_10px_30px_-8px_rgba(37,211,102,0.6)] transition-[background-color,transform] duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366] active:scale-95 md:bottom-6 md:right-6 [@media(hover:hover)]:hover:bg-[#1ebe5a]"
+      className="group fixed bottom-[max(1.5rem,env(safe-area-inset-bottom))] right-5 z-40 inline-flex h-14 items-center justify-center rounded-full bg-[#25D366] px-3.5 text-white shadow-[0_10px_30px_-8px_rgba(37,211,102,0.6)] transition-[background-color,transform] duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366] active:scale-95 md:bottom-8 md:right-8 [@media(hover:hover)]:hover:bg-[#1ebe5a]"
     >
       <WhatsAppIcon className="size-7 shrink-0" />
       <span className="max-w-0 overflow-hidden whitespace-nowrap text-sm font-medium opacity-0 transition-[max-width,opacity,margin] duration-300 ease-out group-focus-visible:ml-2 group-focus-visible:max-w-24 group-focus-visible:opacity-100 [@media(hover:hover)]:group-hover:ml-2 [@media(hover:hover)]:group-hover:max-w-24 [@media(hover:hover)]:group-hover:opacity-100">

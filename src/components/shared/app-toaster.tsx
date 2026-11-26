@@ -11,7 +11,7 @@ export function AppToaster() {
     <Toaster
       position="bottom-center"
       offset={{ bottom: 24 }}
-      mobileOffset={{ bottom: 88, left: 16, right: 16 }} // 88px = di atas tombol WhatsApp
+      mobileOffset={{ bottom: 96, left: 16, right: 16 }} // 88px = di atas tombol WhatsApp
       visibleToasts={2}
       duration={2800}
       toastOptions={{
