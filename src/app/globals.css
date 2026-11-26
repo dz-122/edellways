@@ -206,5 +206,9 @@
 
 /* Offset tinggi header sticky (h-16 = 4rem) supaya judul section tidak ketutup */
 section[id] {
-  scroll-margin-top: 4rem;
+  scroll-margin-top: 4.0625rem;
+}
+
+#kontak {
+  scroll-margin-top: 1rem;
 }
