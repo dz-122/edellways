@@ -5,7 +5,13 @@ import { useCatalogNav } from "./catalog-nav-provider";
 export function CatalogResults({ children }: { children: React.ReactNode }) {
   const { pending } = useCatalogNav();
   return (
-    <div aria-busy={pending} className={cn("transition-opacity duration-200", pending && "pointer-events-none opacity-50")}>
+    <div
+      aria-busy={pending}
+      className={cn(
+        "flex min-h-0 flex-1 flex-col transition-opacity duration-200",
+        pending && "pointer-events-none opacity-50",
+      )}
+    >
       {children}
     </div>
   );

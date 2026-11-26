@@ -16,7 +16,7 @@ type Snapshot = {
   items: CatalogProduct[];
   page: number;
   pages: number;
-  scrollY: number;
+  scrollTop: number;
 };
 
 type Props = {
@@ -43,6 +43,7 @@ export function ProductGrid({
   const [pages, setPages] = useState(pageCount);
   const [status, setStatus] = useState<Status>("idle");
   const loading = useRef(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const sentinel = useRef<HTMLDivElement>(null);
   const hasMore = page < pages;
 
@@ -65,7 +66,7 @@ export function ProductGrid({
       setPages(snap.pages);
       requestAnimationFrame(() =>
         requestAnimationFrame(() =>
-          window.scrollTo({ top: snap.scrollY, behavior: "instant" }),
+          scrollRef.current?.scrollTo({ top: snap.scrollTop }),
         ),
       );
     } catch {}
@@ -94,12 +95,14 @@ export function ProductGrid({
   }, [filters, page, pages]);
 
   // observer: tanpa root
+  // observer memakai area scroll sebagai root
   useEffect(() => {
     const el = sentinel.current;
-    if (!el || status !== "idle" || !hasMore) return;
+    const root = scrollRef.current;
+    if (!el || !root || status !== "idle" || !hasMore) return;
     const observer = new IntersectionObserver(
       (entries) => entries[0].isIntersecting && loadNext(),
-      { rootMargin: "800px 0px" },
+      { root, rootMargin: "600px 0px" },
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -112,7 +115,7 @@ export function ProductGrid({
         items,
         page,
         pages,
-        scrollY: window.scrollY,
+        scrollTop: scrollRef.current?.scrollTop ?? 0,
       };
       sessionStorage.setItem(cacheKey, JSON.stringify(snap));
       sessionStorage.setItem(RESTORE_FLAG, cacheKey);
@@ -121,12 +124,15 @@ export function ProductGrid({
 
   return (
     <div
+      ref={scrollRef}
       role="region"
       aria-label="Arrangements"
+      tabIndex={0}
       onClickCapture={(e) =>
         (e.target as HTMLElement).closest('a[href^="/produk/"]') &&
         saveSnapshot()
       }
+      className="scroll-minimal -mr-3 min-h-0 flex-1 overflow-y-auto pb-6 pr-3 outline-none focus-visible:ring-2 focus-visible:ring-black/20"
     >
       <div className={GRID}>
         {items.map((product) => (

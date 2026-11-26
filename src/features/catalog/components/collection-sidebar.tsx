@@ -13,7 +13,7 @@ export function CollectionSidebar({ facets }: { facets: CatalogFacets }) {
   return (
     <aside
       aria-labelledby="sidebar-collections"
-      className="scroll-minimal hidden lg:sticky lg:top-24 lg:-m-1 lg:block lg:max-h-[calc(100dvh-7rem)] lg:overflow-y-auto lg:p-1"
+      className="scroll-minimal hidden lg:block lg:overflow-y-auto lg:p-1"
     >
       <nav aria-label="Collections">
         <ul className="space-y-2.5">
