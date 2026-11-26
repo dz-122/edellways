@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="id" data-scroll-behavior="smooth" className={jakarta.variable}>
       <body className="font-sans antialiased">
         {children}
-        <AppToaster />p
+        <AppToaster />
       </body>
     </html>
   );

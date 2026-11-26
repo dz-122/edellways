@@ -4,6 +4,7 @@ import { CartProvider } from "@/features/cart/cart-provider";
 import { CartDrawer } from "@/features/cart/components/cart-drawer";
 import { SiteFooter } from "@/features/storefront/components/site-footer";
 import { SiteHeader } from "@/features/storefront/components/site-header";
+import { WhatsAppFab } from "@/features/storefront/components/whatsapp-fab";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -48,6 +49,7 @@ export default function CustomerLayout({
         <main>{children}</main>
         <SiteFooter />
         <CartDrawer />
+        <WhatsAppFab />
       </CartProvider>
     </div>
   );
