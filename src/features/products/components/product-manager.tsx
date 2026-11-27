@@ -107,9 +107,9 @@ export function ProductManager({ products, options }: ProductManagerProps) {
           className="w-44"
           value={occasionId}
           onChange={(e) => setOccasionId(e.target.value)}
-          aria-label="Filter acara"
+          aria-label="Filter produk"
         >
-          <option value="">Semua acara</option>
+          <option value="">Produk</option>
           {options.occasions.map((o) => (
             <option key={o.id} value={o.id}>
               {o.name}
@@ -141,7 +141,7 @@ export function ProductManager({ products, options }: ProductManagerProps) {
             <TableRow>
               <TableHead className="w-16 pl-4">Foto</TableHead>
               <TableHead>Produk</TableHead>
-              <TableHead>Koleksi & acara</TableHead>
+              <TableHead>Koleksi & Produk</TableHead>
               <TableHead className="text-right">Harga</TableHead>
               <TableHead>Aktif</TableHead>
               <TableHead>Sold out</TableHead>

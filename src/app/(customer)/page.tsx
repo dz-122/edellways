@@ -34,7 +34,6 @@ export default async function HomePage() {
         <Hero />
       <PerksMarquee />
       <Occasions />
-      <ChristmasSection products={christmas} />
       <FeaturedCollection products={featured} />
       <HowToOrder />
       <BrandStory />

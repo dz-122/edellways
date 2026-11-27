@@ -3,7 +3,7 @@ export type CategoryType = (typeof CATEGORY_TYPES)[number];
 
 export const CATEGORY_TYPE_LABELS: Record<CategoryType, string> = {
   COLLECTION: "Koleksi",
-  OCCASION: "Acara",
+  OCCASION: "Produk",
 };
 
 export const CATEGORY_TYPE_HINTS: Record<CategoryType, string> = {

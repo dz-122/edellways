@@ -27,7 +27,7 @@ export async function saveCategory(id: string | null, name: string, type: Catego
     if (id) await prisma.category.update({ where: { id }, data: { name: parsed.data.name, slug } });
     else await prisma.category.create({ data: { name: parsed.data.name, slug, type: parsed.data.type } });
   } catch (e) {
-    if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") return fail("Nama itu sudah dipakai (koleksi atau acara).");
+    if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") return fail("Nama itu sudah dipakai (koleksi atau produk).");
     throw e;
   }
   refresh();

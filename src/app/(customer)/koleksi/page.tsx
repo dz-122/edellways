@@ -52,7 +52,7 @@ export default async function CollectionPage({
   <div className={`${container} flex h-[calc(100dvh-4.0625rem)] flex-col pb-4 pt-4 md:pb-6 md:pt-6`}>
     <header className="mx-auto mb-3 max-w-2xl shrink-0 text-center md:mb-5">
       <h1 className="font-display text-2xl leading-tight sm:text-4xl md:text-5xl">
-        Our Floral <em className="italic text-black">Collection</em>
+        Our Greeting <em className="italic text-black">Collection</em>
       </h1>
       <p className="mt-2 hidden text-balance text-ink/70 sm:block sm:text-base">
         Explore our signature arrangements, where every detail is designed with intention.
