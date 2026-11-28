@@ -2,8 +2,8 @@
 export const CATALOG_COPY = {
   collectionsHeading: "Jelajahi Koleksi Kami",
   allCollections: "Semua Koleksi",
-  allOccasions: "Semua Acara",
-  occasionLabel: "Filter berdasarkan acara",
+  allOccasions: "Semua Produk",
+  occasionLabel: "Filter berdasarkan Acara / Ukuran",
   searchPlaceholder: "Cari buket, hampers atau giftbox...",
   sortBy: "Urutkan:",
   showing: (n: number) =>
