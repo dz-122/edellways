@@ -16,5 +16,5 @@ export const PAPER_OPTIONS = [
 export const DEFAULT_COLS = 32;
 export const PAPER_STORAGE_KEY = "edellways:printer-cols";
 
-export const BLE_CHUNK_SIZE = 100;
-export const BLE_CHUNK_DELAY_MS = 30;
+export const BLE_CHUNK_SIZE = 20;
+export const BLE_CHUNK_DELAY_MS = 25;
